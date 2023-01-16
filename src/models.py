@@ -8,59 +8,65 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Character(Base):
-    __tablename__ = 'character'
-    id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    gender = Column(String(100))
-    height_cm = Column(Integer)
-    mass_kg = Column(Integer)
-    eye_color = Column(String(100))
-    hair_color = Column(String(100))
-    skin_color = Column(String(100))
-    url = Column(String(200), unique=True)
-    planet_id = Column(Integer, ForeignKey('planet.id'))
-    vehicle_id = Column(Integer, ForeignKey('vehicle.id'))
-
 class Planet(Base):
     __tablename__ = 'planet'
     id = Column(Integer, primary_key=True)
-    name = Column(String(100))
+    name = Column(String(25))
     population = Column(Integer)
-    climate = Column(String(100))
-    terrain = Column(String(100))
+    climate = Column(String(50))
+    terrain = Column(String(50))
     diameter = Column(Integer)
     orbital_period = Column(Integer)
     rotation_period = Column(Integer)
-    url = Column(String(200), unique=True)
+    url = Column(String(100), unique=True)
 
 class Vehicle(Base):
     __tablename__ = 'vehicle'
     id = Column(Integer, primary_key=True)
-    name = Column(String(100))
-    model = Column(String(100))
+    name = Column(String(40))
+    model = Column(String(50))
     passengers = Column(Integer)
     length = Column(Integer)
     crew = Column(Integer)
     cargo_capacity = Column(Integer)
-    url = Column(String(200), unique=True)
-    consumables = Column(String(100))
-    vehicle_class = Column(String(100))
+    url = Column(String(100), unique=True)
+    consumables = Column(String(50))
+    vehicle_class = Column(String(50))
+
+class Character(Base):
+    __tablename__ = 'character'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(25))
+    gender = Column(String(15))
+    height_cm = Column(Integer)
+    mass_kg = Column(Integer)
+    eye_color = Column(String(20))
+    hair_color = Column(String(20))
+    skin_color = Column(String(20))
+    url = Column(String(100), unique=True)
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    planet = relationship(Planet)
+    vehicle_id = Column(Integer, ForeignKey('vehicle.id'))
+    vehicle = relationship(Vehicle)
 
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    email = Column(String(100))
-    username = Column(String(100))
-    password = Column(String(100))
+    email = Column(String(40))
+    username = Column(String(40))
+    password = Column(String(30))
 
 class Favorite(Base):
     __tablename__ = 'favorite'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
+    user = relationship(User)
     character_id = Column(Integer, ForeignKey('character.id'))
+    character = relationship(Character)
     planet_id = Column(Integer, ForeignKey('planet.id'))
+    planet = relationship(Planet)
     vehicle_id = Column(Integer, ForeignKey('vehicle.id'))
+    vehicle = relationship(Vehicle)
 
     def to_dict(self):
         return {}
